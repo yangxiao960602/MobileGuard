@@ -5,10 +5,11 @@
 	android:id="@+id/rl_splash_root"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@drawable/luncher_bg"
 	>
 
-    <TextView
+	<!-- 	android:background="@drawable/luncher_bg" -->
+
+	<TextView
 		android:id="@+id/tv_splash_version_name"
 		android:layout_centerInParent="true"
 		android:layout_width="wrap_content"
@@ -22,6 +23,36 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/tv_splash_version_name"
-		android:layout_centerHorizontal="true"/>
+		android:layout_centerHorizontal="true"
+		android:id="@+id/progressBar"/>
+
+	<TextView
+		android:id="@+id/textView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="91dp"
+		/>
+
+	<TextView
+		android:id="@+id/tv_copyright"
+		android:layout_width="200dp"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/textView"
+		android:layout_centerHorizontal="true"
+		android:text="MobileGuard\n\t\t\t\t\t\tProduced by\n\t\t\t\t\t\t\t\t\t\t\t\t杨潇"
+		android:textSize="20sp"/>
+
+	<ProgressBar
+		android:id="@+id/pb_download_progress"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="37dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:visibility="gone"/>
 
 </RelativeLayout>
