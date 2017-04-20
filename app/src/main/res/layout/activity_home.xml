@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_height="match_parent"
+			  android:orientation="vertical">
 
 	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
+		style="@style/tv_title"
 		android:text="主界面"/>
+
+	<com.net13.sean.mobileguard.view.MyTextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:ellipsize="marquee"
+		android:singleLine="true"
+		android:text="湖北经济学院网络Q1341杨潇毕业设计作品 : Android MobileGuard"
+		android:textSize="20sp"/>
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginTop="20dp">
+
+		<GridView
+			android:id="@+id/gv_home_menus"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:background="@android:color/transparent"
+			android:numColumns="3"
+			android:padding="0dip"
+			android:verticalSpacing="20dip"></GridView>
+
+	</LinearLayout>
+
+
 </LinearLayout>
+

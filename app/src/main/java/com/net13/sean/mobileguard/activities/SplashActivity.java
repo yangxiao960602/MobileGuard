@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -32,7 +32,6 @@ import com.net13.sean.mobileguard.domain.UrlBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,6 +61,35 @@ public class SplashActivity extends AppCompatActivity {
 	private String versionName;    //版本名
 	private UrlBean parsedUrlData;    //url的信息封装
 	private long startTimeMillis;    //记录开始访问网络的时间
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			//处理消息
+			switch (msg.what) {
+				case LOADMAIN:    //加载主界面
+					loadMain();
+					break;
+				case ERROR:    //出现异常
+					switch (msg.arg1) {
+						case 404:    //服务器上json资源找不到
+							Toast.makeText(getApplicationContext(), "404 找不到服务器上的json资源!", Toast.LENGTH_SHORT).show();
+							break;
+						case 4001:    //无网络连接
+							Toast.makeText(getApplicationContext(), "4001 无法连接到服务器!", Toast.LENGTH_SHORT).show();
+							break;
+						case 4003:    //json数据格式错误
+							Toast.makeText(getApplicationContext(), "4003 json数据格式有误!", Toast.LENGTH_SHORT).show();
+							break;
+					}
+					loadMain();
+					break;
+				case SHOWUPDATEDIALOG:    //显示是否更新的对话框
+					showUpadeDialog();
+				default:
+					break;
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +148,7 @@ public class SplashActivity extends AppCompatActivity {
 					//获取当前时间
 					startTimeMillis = System.currentTimeMillis();
 
-					URL url = new URL("http://192.168.1.103:8080/MobileGuard/guardversion.json");
+					URL url = new URL("http://192.168.1.100:8080/MobileGuard/guardversion.json");
 					conn = (HttpURLConnection) url.openConnection();
 					conn.setReadTimeout(5000);    //读取数据超时
 					conn.setConnectTimeout(5000);    //网络连接超时
@@ -155,7 +183,7 @@ public class SplashActivity extends AppCompatActivity {
 					errorCode = 4002;
 					e.printStackTrace();
 				} catch (IOException e) {    //4001
-					//Log.d(TAG, "run: 4001");	//网络连接失败
+					//Log.d(TAG, "run: 4001");	//无法连接到服务器
 					errorCode = 4001;
 					e.printStackTrace();
 				} catch (JSONException e) {    //4003
@@ -181,7 +209,7 @@ public class SplashActivity extends AppCompatActivity {
 					}
 					long endTime = System.currentTimeMillis();
 					if (endTime - startTimeMillis < 3000) {
-						SystemClock.sleep(4000 - (endTime - startTimeMillis));    //补足动画时间
+						SystemClock.sleep(3000 - (endTime - startTimeMillis));    //补足动画时间
 					}
 					handler.sendMessage(msg);    //发送信息
 
@@ -200,36 +228,6 @@ public class SplashActivity extends AppCompatActivity {
 			}
 		}.start();
 	}
-
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			//处理消息
-			switch (msg.what) {
-				case LOADMAIN:    //加载主界面
-					loadMain();
-					break;
-				case ERROR:    //出现异常
-					switch (msg.arg1) {
-						case 404:    //服务器上json资源找不到
-							Toast.makeText(getApplicationContext(), "404 找不到服务器上的json资源!", Toast.LENGTH_SHORT).show();
-							break;
-						case 4001:    //无网络连接
-							Toast.makeText(getApplicationContext(), "4001 无网络!", Toast.LENGTH_SHORT).show();
-							break;
-						case 4003:    //json数据格式错误
-							Toast.makeText(getApplicationContext(), "4003 json数据格式有误!", Toast.LENGTH_SHORT).show();
-							break;
-					}
-					loadMain();
-					break;
-				case SHOWUPDATEDIALOG:    //显示是否更新的对话框
-					showUpadeDialog();
-				default:
-					break;
-			}
-		}
-	};
 
 	private void loadMain() {
 		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
