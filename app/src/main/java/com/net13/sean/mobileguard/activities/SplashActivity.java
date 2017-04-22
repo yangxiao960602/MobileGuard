@@ -208,8 +208,8 @@ public class SplashActivity extends AppCompatActivity {
 						msg.arg1 = errorCode;
 					}
 					long endTime = System.currentTimeMillis();
-					if (endTime - startTimeMillis < 3000) {
-						SystemClock.sleep(3000 - (endTime - startTimeMillis));    //补足动画时间
+					if (endTime - startTimeMillis < 1000) {
+						SystemClock.sleep(1000 - (endTime - startTimeMillis));    //补足动画时间
 					}
 					handler.sendMessage(msg);    //发送信息
 
@@ -411,7 +411,7 @@ public class SplashActivity extends AppCompatActivity {
 		//0.0完全透明, 1.0完全显示
 		AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
 		//动画播放的时间
-		aa.setDuration(3000);
+		aa.setDuration(1000);
 		//动画停留在结束状态
 		aa.setFillAfter(true);
 
@@ -424,7 +424,7 @@ public class SplashActivity extends AppCompatActivity {
 				Animation.RELATIVE_TO_SELF, 0.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f);
 		//设置动画时间
-		ra.setDuration(3000);
+		ra.setDuration(1000);
 		//动画停留在结束状态
 		ra.setFillAfter(true);
 
@@ -436,7 +436,7 @@ public class SplashActivity extends AppCompatActivity {
 				Animation.RELATIVE_TO_SELF, 0.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f);
 		//设置动画时间
-		sa.setDuration(3000);
+		sa.setDuration(1000);
 		//动画停留在结束状态
 		sa.setFillAfter(true);
 

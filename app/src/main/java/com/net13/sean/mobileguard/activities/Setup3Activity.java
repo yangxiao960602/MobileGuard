@@ -17,15 +17,13 @@ import com.net13.sean.mobileguard.utils.SpTools;
 
 
 /**
- * @author Administrator
- *         第三个设置向导界面
+ * 第三个设置向导界面
  */
 public class Setup3Activity extends BaseSetupActivity {
 	private EditText et_safeNumber;//安全号码的编辑框
 
-	/* (non-Javadoc)
+	/*
 	 * 子类覆盖此方法来完成组件数据的初始化
-	 * @see com.itheima62.mobileguard.activities.BaseSetupActivity#initData()
 	 */
 	@Override
 	public void initData() {
@@ -51,9 +49,9 @@ public class Setup3Activity extends BaseSetupActivity {
 	 */
 	public void selectSafeNumber(View v) {
 		//弹出新的Activity来显示所有好友信息
-		//Intent friends = new Intent(this,FriendsActivity.class);
-		//startActivityForResult(friends,1);//启动显示好友界面
-		//
+		Intent friends = new Intent(this, FriendsActivity.class);
+		startActivityForResult(friends, 1);//启动显示好友界面
+
 	}
 
 	@Override
@@ -78,9 +76,8 @@ public class Setup3Activity extends BaseSetupActivity {
 		//获取安全号码
 		String safeNumber = et_safeNumber.getText().toString().trim();
 
-		//如果安全号码，下一步不进行页面的跳转
 		if (TextUtils.isEmpty(safeNumber)) {
-			//为空
+			//如果安全号码为空，下一步不进行页面的跳转
 			Toast.makeText(getApplicationContext(), "安全号码不能为空", Toast.LENGTH_SHORT).show();
 			//不调用父类的功能来进行页面的切换
 			return;

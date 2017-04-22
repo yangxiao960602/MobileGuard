@@ -26,9 +26,8 @@ public class Setup2Activity extends BaseSetupActivity {
 	private Button bt_bind;
 	private ImageView iv_isBind;
 
-	/* (non-Javadoc)
+	/*
 	 * 初始化组件的数据
-	 * @see com.itheima62.mobileguard.activities.BaseSetupActivity#initData()
 	 */
 	@Override
 	public void initData() {
@@ -61,9 +60,8 @@ public class Setup2Activity extends BaseSetupActivity {
 
 	}
 
-	/* (non-Javadoc)
+	/*
 	 * 添加自己的事件
-	 * @see com.itheima62.mobileguard.activities.BaseSetupActivity#initEvent()
 	 */
 	@Override
 	public void initEvent() {
@@ -76,8 +74,7 @@ public class Setup2Activity extends BaseSetupActivity {
 				if (TextUtils.isEmpty(SpTools.getString(getApplicationContext(), MyConstants.SIM, ""))) {
 					//没有绑定sim卡
 					{
-
-						///绑定sim的业务
+						//绑定sim的业务
 						//绑定sim卡,存储sim卡信息
 						//获取sim卡信息
 						TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -92,7 +89,7 @@ public class Setup2Activity extends BaseSetupActivity {
 						iv_isBind.setImageResource(R.drawable.lock);//设置加锁的图片
 					}
 				} else {
-					//已经绑定sim卡,解绑sim卡，就是保存空值
+					//已经绑定sim卡,解绑sim卡，保存空值
 					SpTools.putString(getApplicationContext(), MyConstants.SIM, "");
 					{
 						//切换是否绑定sim卡的图标
@@ -116,9 +113,8 @@ public class Setup2Activity extends BaseSetupActivity {
 		super.next(v);//调用父类的功能
 	}
 
-	/* (non-Javadoc)
+	/*
 	 * 进入下一个页面的逻辑处理
-	 * @see com.itheima62.mobileguard.activities.BaseSetupActivity#nextActivity()
 	 */
 	@Override
 	public void nextActivity() {

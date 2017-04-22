@@ -9,6 +9,8 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.net13.sean.mobileguard.R;
+
 
 /**
  * Created by SEAN on 2017/4/21.
@@ -23,7 +25,7 @@ public abstract class BaseSetupActivity extends Activity {
 		initView();
 		initGesture();//初始化手势识别器
 
-
+		//Setup4Activity内的复选框->要求先设置事件,后初始化数据,因为初始化数据时会出发事件
 		initData();//初始数据
 		initEvent();//初始化组件的事件
 	}
@@ -58,7 +60,7 @@ public abstract class BaseSetupActivity extends Activity {
 			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 								   float velocityY) {
 				//x轴方向的速度是否满足横向滑动的条件 pix/s
-				if (velocityX > 200) { //速度大于400像素每秒
+				if (Math.abs(velocityX) > 200) { //速度大于200像素每秒
 					//可以完成滑动
 					float dx = e2.getX() - e1.getX();//x轴方向滑动的间距
 					if (Math.abs(dx) < 100) {
@@ -91,7 +93,6 @@ public abstract class BaseSetupActivity extends Activity {
 
 			@Override
 			public void onLongPress(MotionEvent e) {
-
 			}
 
 
@@ -117,11 +118,23 @@ public abstract class BaseSetupActivity extends Activity {
 		nextActivity();
 
 		// 2,动画的播放
-		nextAnimation();// 界面之间企划的动画
+		nextAnimation();// 界面之间切换的动画
 		/*
 		 * Intent next = new Intent(this,Setup2Activity.class);
 		 * startActivity(next);
 		 */
+	}
+
+
+	/**
+	 * 上一个界面的事件处理
+	 * @param v
+	 */
+	public void prev(View v) {
+		// 1,完成界面的切换
+		prevActivity();
+		// 2,动画的播放
+		prevAnimation();// 界面之间企划的动画
 	}
 
 	/**
@@ -129,7 +142,14 @@ public abstract class BaseSetupActivity extends Activity {
 	 */
 	private void nextAnimation() {
 		//第一个参数进来的动画，第二个参数是出去的动画
-		//overridePendingTransition(R.anim.next_in, R.anim.next_out);
+		overridePendingTransition(R.anim.next_in, R.anim.next_out);
+	}
+
+	/**
+	 * 上一个界面进来的动画
+	 */
+	private void prevAnimation() {
+		overridePendingTransition(R.anim.prev_in, R.anim.prev_out);
 	}
 
 	/**
@@ -143,26 +163,9 @@ public abstract class BaseSetupActivity extends Activity {
 		finish();//关闭自己
 	}
 
+
 	public abstract void nextActivity();
 
 	public abstract void prevActivity();
-
-
-	/**
-	 * @param v 上一个页面的事件处理
-	 */
-	public void prev(View v) {
-		// 1,完成界面的切换
-		prevActivity();
-		// 2,动画的播放
-		prevAnimation();// 界面之间企划的动画
-	}
-
-	/**
-	 * 上一个界面进来的动画
-	 */
-	private void prevAnimation() {
-		//overridePendingTransition(R.anim.prev_in, R.anim.prev_out);
-	}
 
 }

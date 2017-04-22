@@ -17,32 +17,34 @@
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
 		android:text="防盗保护已经开启"/>
 
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="20dp"
 		android:orientation="horizontal">
 
 		<View
-			android:layout_width="20dip"
-			android:layout_height="20dip"
+			android:layout_width="15dip"
+			android:layout_height="15dip"
 			android:background="@android:drawable/presence_invisible"/>
 
 		<View
-			android:layout_width="20dip"
-			android:layout_height="20dip"
+			android:layout_width="15dip"
+			android:layout_height="15dip"
 			android:background="@android:drawable/presence_invisible"/>
 
 		<View
-			android:layout_width="20dip"
-			android:layout_height="20dip"
+			android:layout_width="15dip"
+			android:layout_height="15dip"
 			android:background="@android:drawable/presence_invisible"/>
 
 		<View
-			android:layout_width="20dip"
-			android:layout_height="20dip"
+			android:layout_width="15dip"
+			android:layout_height="15dip"
 			android:background="@android:drawable/presence_online"/>
 	</LinearLayout>
 

@@ -11,7 +11,7 @@
 	<com.net13.sean.mobileguard.view.MyTextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="20dp"
+		android:layout_marginTop="25dp"
 		android:ellipsize="marquee"
 		android:singleLine="true"
 		android:text="湖北经济学院网络Q1341杨潇毕业设计作品 : Android MobileGuard"
@@ -19,8 +19,7 @@
 
 	<LinearLayout
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_marginTop="20dp">
+		android:layout_height="fill_parent">
 
 		<GridView
 			android:id="@+id/gv_home_menus"
