@@ -72,7 +72,12 @@ public class HomeActivity extends Activity {
 							//设置过密码,验证密码
 							showEnterDialog();
 						}
+						break;
 
+					case 8://设置中心
+						//打开设置中心的界面
+						Intent setting = new Intent(HomeActivity.this, SettingCenterActivity.class);
+						startActivity(setting);
 						break;
 				}
 			}

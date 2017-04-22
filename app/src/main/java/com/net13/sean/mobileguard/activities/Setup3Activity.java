@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.net13.sean.mobileguard.R;
+import com.net13.sean.mobileguard.utils.EncryptTools;
 import com.net13.sean.mobileguard.utils.MyConstants;
 import com.net13.sean.mobileguard.utils.SpTools;
 
@@ -21,14 +22,16 @@ import com.net13.sean.mobileguard.utils.SpTools;
  */
 public class Setup3Activity extends BaseSetupActivity {
 	private EditText et_safeNumber;//安全号码的编辑框
+	private String safeNumber;//安全号码
 
 	/*
 	 * 子类覆盖此方法来完成组件数据的初始化
 	 */
 	@Override
 	public void initData() {
+		safeNumber = SpTools.getString(getApplicationContext(), MyConstants.SAFENUMBER, "");
 
-		et_safeNumber.setText(SpTools.getString(getApplicationContext(), MyConstants.SAFENUMBER, ""));
+		et_safeNumber.setText(EncryptTools.decrypt(MyConstants.MUSIC, safeNumber));
 		super.initData();
 	}
 
@@ -65,16 +68,15 @@ public class Setup3Activity extends BaseSetupActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	/* (non-Javadoc)
+	/*
 	 * 覆盖父类的方法，完成业务
-	 * @see com.itheima62.mobileguard.activities.BaseSetupActivity#next(android.view.View)
 	 */
 	@Override
 	public void next(View v) {
 		//保存安全号码
 
 		//获取安全号码
-		String safeNumber = et_safeNumber.getText().toString().trim();
+		safeNumber = et_safeNumber.getText().toString().trim();
 
 		if (TextUtils.isEmpty(safeNumber)) {
 			//如果安全号码为空，下一步不进行页面的跳转
@@ -82,6 +84,8 @@ public class Setup3Activity extends BaseSetupActivity {
 			//不调用父类的功能来进行页面的切换
 			return;
 		} else {
+			//对安全号码进行加密
+			safeNumber = EncryptTools.encrypt(MyConstants.MUSIC, safeNumber);
 			//保存安全号码
 			SpTools.putString(getApplicationContext(), MyConstants.SAFENUMBER, safeNumber);
 		}

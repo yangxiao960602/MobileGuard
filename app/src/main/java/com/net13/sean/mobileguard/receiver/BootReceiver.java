@@ -7,6 +7,7 @@ import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 
 import com.net13.sean.mobileguard.service.LostFindService;
+import com.net13.sean.mobileguard.utils.EncryptTools;
 import com.net13.sean.mobileguard.utils.MyConstants;
 import com.net13.sean.mobileguard.utils.SpTools;
 
@@ -33,14 +34,13 @@ public class BootReceiver extends BroadcastReceiver {
 			//sim卡变化，发送报警短信
 			//取出安全号码,发送报警短信
 			String safeNumber = SpTools.getString(context, MyConstants.SAFENUMBER, "");
-			//safeNumber = EncryptTools.decryption(MyConstants.MUSIC, safeNumber);
+			safeNumber = EncryptTools.decrypt(MyConstants.MUSIC, safeNumber);
 			//发送短信给安全号码
 			SmsManager sm = SmsManager.getDefault();
 			sm.sendTextMessage(safeNumber, "", "I am thief !!!", null, null);
 		}
 
 		//自动启动防盗服务
-
 		if (SpTools.getBoolean(context, MyConstants.LOSTFIND, false)) {
 			// true  开机自动启动防盗服务
 			Intent service = new Intent(context, LostFindService.class);

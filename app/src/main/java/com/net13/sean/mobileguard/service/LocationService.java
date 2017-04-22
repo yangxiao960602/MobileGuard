@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 
+import com.net13.sean.mobileguard.utils.EncryptTools;
 import com.net13.sean.mobileguard.utils.MyConstants;
 import com.net13.sean.mobileguard.utils.SpTools;
 
@@ -74,7 +75,7 @@ public class LocationService extends Service {
 
 				// 发送短信
 				String safeNumber = SpTools.getString(LocationService.this, MyConstants.SAFENUMBER, "");
-				//safeNumber = EncryptTools.decryption(MyConstants.MUSIC, safeNumber);
+				safeNumber = EncryptTools.decrypt(MyConstants.MUSIC, safeNumber);
 				//发送短信给安全号码
 				SmsManager sm = SmsManager.getDefault();
 				sm.sendTextMessage(safeNumber, "", tv_mess + "", null, null);

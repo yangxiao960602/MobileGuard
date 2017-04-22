@@ -32,12 +32,12 @@
 		<activity
 			android:name=".activities.SplashActivity"
 			android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
 
 		<activity android:name=".activities.HomeActivity"></activity>
 
@@ -48,6 +48,8 @@
 		<activity android:name=".activities.Setup3Activity"></activity>
 		<activity android:name=".activities.Setup4Activity"></activity>
 		<activity android:name=".activities.FriendsActivity"></activity>
+		<activity android:name=".activities.SettingCenterActivity"></activity>
+
 
 
 		<service android:name=".service.LostFindService"></service>
@@ -60,6 +62,19 @@
 			</intent-filter>
 		</receiver>
 
+		<receiver
+			android:name=".receiver.DeviceAdminSample"
+			android:description="@string/sample_device_admin_description"
+			android:label="@string/sample_device_admin"
+			android:permission="android.permission.BIND_DEVICE_ADMIN">
+			<meta-data
+				android:name="android.app.device_admin"
+				android:resource="@xml/device_admin_sample"/>
+
+			<intent-filter>
+				<action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+			</intent-filter>
+		</receiver>
 
 	</application>
 

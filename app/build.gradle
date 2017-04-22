@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.net13.sean.mobileguard"
-        minSdkVersion 15
+		minSdkVersion 10
         targetSdkVersion 25
         versionCode 1
         versionName "第一版"
