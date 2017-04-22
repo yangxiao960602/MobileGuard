@@ -28,15 +28,15 @@ public class BootReceiver extends BroadcastReceiver {
 		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		String simSerialNumber = tm.getSimSerialNumber();
 
-		//判断是否变化 + "1"只是测试代码
+		//判断是否变化 + "1" ,仅用作测试
 		if (!oldsim.equals(simSerialNumber + "1")) {
 			//sim卡变化，发送报警短信
-			//取出安全号码,肯定有的
+			//取出安全号码,发送报警短信
 			String safeNumber = SpTools.getString(context, MyConstants.SAFENUMBER, "");
-			safeNumber = EncryptTools.decryption(MyConstants.MUSIC, safeNumber);
+			//safeNumber = EncryptTools.decryption(MyConstants.MUSIC, safeNumber);
 			//发送短信给安全号码
 			SmsManager sm = SmsManager.getDefault();
-			sm.sendTextMessage(safeNumber, "", "wo shi xiao tou ", null, null);
+			sm.sendTextMessage(safeNumber, "", "I am thief !!!", null, null);
 		}
 
 		//自动启动防盗服务
