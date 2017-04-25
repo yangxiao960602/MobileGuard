@@ -3,11 +3,11 @@ package com.net13.sean.mobileguard.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +30,7 @@ import com.net13.sean.mobileguard.R;
 import com.net13.sean.mobileguard.dao.BlackDao;
 import com.net13.sean.mobileguard.domain.BlackBean;
 import com.net13.sean.mobileguard.domain.BlackTable;
+import com.net13.sean.mobileguard.utils.MyConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class TelSmsSafeActivity extends Activity {
 				case FINISH:// 数据加载完成
 					// 判断是否有数据
 
-					//if (moreDatas.size() != 0) {// 有数据
+					//if (allDatas.size() != 0) {// 有数据
 					if (datas.size() != 0) {// 有数据
 						// 显示listview
 						lv_safenumbers.setVisibility(View.VISIBLE);
@@ -107,7 +108,7 @@ public class TelSmsSafeActivity extends Activity {
 		}
 
 	};
-	private List<BlackBean> moreDatas;// 动态加载数据的临时容器
+	private List<BlackBean> allDatas;// 动态加载数据的临时容器
 	private AlertDialog dialog;
 	private View contentView;
 	private PopupWindow pw;
@@ -126,6 +127,20 @@ public class TelSmsSafeActivity extends Activity {
 
 		initPopupWindow();// 弹出窗体，功能：让用户可以从联系人，电话记录，短信记录中添加黑名单数据
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// 获取联系人，电话记录，短信记录等的电话
+		if (data != null) {
+			// 用户点击条目获取结果
+			String phone = data.getStringExtra(MyConstants.SAFENUMBER);
+			// 显示输入黑名单的对话框
+			showInputBlacknumberDialog(phone);
+		} else {
+			// 用户点击返回键 事件处理
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void showPopupWindow() {
@@ -172,19 +187,31 @@ public class TelSmsSafeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				switch (v.getId()) {
-					case R.id.tv_popup_black_contacts:// 从联系人导入
-						System.out.println("从联系人导入");
-						break;
-					case R.id.tv_popup_black_phonelog:// 从电话日志导入
-						System.out.println("从电话日志导入");
-						break;
 					case R.id.tv_popup_black_shoudong:// 手动导入
 						System.out.println("手动导入");
-						showInputBlacknumberDialog();
-
+						//显示手动导入联系人对话框
+						showInputBlacknumberDialog("");
 						break;
+
+					case R.id.tv_popup_black_contacts:// 从联系人导入
+						System.out.println("从联系人导入");
+						//启动联系人界面并获取结果
+						Intent intentContacts = new Intent(TelSmsSafeActivity.this, FriendsActivity.class);
+						startActivityForResult(intentContacts, 1);
+						break;
+
+					case R.id.tv_popup_black_phonelog:// 从电话日志导入
+						System.out.println("从电话日志导入");
+						//启动联系人界面并获取结果
+						Intent intentCalllogs = new Intent(TelSmsSafeActivity.this, CalllogsActivity.class);
+						startActivityForResult(intentCalllogs, 1);
+						break;
+
 					case R.id.tv_popup_black_smslog:// 从短信导入
 						System.out.println("从短信导入");
+						//启动联系人界面并获取结果
+						Intent intentSmslogs = new Intent(TelSmsSafeActivity.this, SmslogsActivity.class);
+						startActivityForResult(intentSmslogs, 1);
 						break;
 
 					default:
@@ -274,13 +301,13 @@ public class TelSmsSafeActivity extends Activity {
 				// 取数据之前，发个消息显示正在加载数据的进度条
 				handler.obtainMessage(LOADING).sendToTarget();
 
-				SystemClock.sleep(600);
+				//SystemClock.sleep(600);
 
 				// 加载更多数据
-				moreDatas = dao.getMoreDatas(MOREDATASCOUNTS, datas.size());
-				moreDatas = dao.getAllDatas();
+				//allDatas = dao.getMoreDatas(MOREDATASCOUNTS, datas.size());
+				allDatas = dao.getAllDatas();
 
-				datas.addAll(moreDatas);// 把一个容器的所有数据加进来
+				datas.addAll(allDatas);// 把一个容器的所有数据加进来
 
 				// 取数据完成，发消息通知取数据完成
 				handler.obtainMessage(FINISH).sendToTarget();
@@ -324,13 +351,19 @@ public class TelSmsSafeActivity extends Activity {
 		showPopupWindow();
 	}
 
-	private void showInputBlacknumberDialog() {
+	/**
+	 * 从其他界面选择的黑名单号码
+	 *
+	 * @param phone
+	 */
+	private void showInputBlacknumberDialog(String phone) {
 		AlertDialog.Builder ab = new AlertDialog.Builder(this);
 		View view = View.inflate(getApplicationContext(),
 				R.layout.dialog_addblacknumber, null);
 
 		// 黑名单号码编辑框
 		final EditText et_blackNumber = (EditText) view.findViewById(R.id.et_telsmssafe_blacknumber);
+		et_blackNumber.setText(phone);
 
 		// 短信拦截复选框
 		final CheckBox cb_sms = (CheckBox) view.findViewById(R.id.cb_telsmssafe_smsmode);
@@ -398,7 +431,6 @@ public class TelSmsSafeActivity extends Activity {
 				adapter = new MyAdapter();
 				lv_safenumbers.setAdapter(adapter);
 				dialog.dismiss();
-
 			}
 		});
 		ab.setView(view);

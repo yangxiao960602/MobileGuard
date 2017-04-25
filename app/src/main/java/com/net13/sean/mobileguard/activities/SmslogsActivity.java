@@ -15,14 +15,15 @@ import java.util.List;
  * 显示所有好友信息的界面
  */
 
-public class FriendsActivity extends BaseFriendsCallSmsActivity {
+public class SmslogsActivity extends BaseFriendsCallSmsActivity {
 
 	/**
 	 * 提取数据的核心方法需要覆盖此方法完成数据的显示
+	 *
 	 * @return
 	 */
 	@Override
 	public List<ContactsBean> getDatas() {
-		return ReadContactsEngine.readContants(getApplicationContext());
+		return ReadContactsEngine.readSmslog(getApplicationContext());
 	}
 }
