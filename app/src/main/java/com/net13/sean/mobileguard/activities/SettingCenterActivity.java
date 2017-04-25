@@ -1,11 +1,14 @@
 package com.net13.sean.mobileguard.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.net13.sean.mobileguard.R;
+import com.net13.sean.mobileguard.service.TelSmsBlackService;
 import com.net13.sean.mobileguard.utils.MyConstants;
+import com.net13.sean.mobileguard.utils.ServiceUtils;
 import com.net13.sean.mobileguard.utils.SpTools;
 import com.net13.sean.mobileguard.view.SettingCenterItemView;
 
@@ -15,10 +18,10 @@ import com.net13.sean.mobileguard.view.SettingCenterItemView;
 
 public class SettingCenterActivity extends Activity {
 	private SettingCenterItemView sciv_autoupdate;
+	private SettingCenterItemView sciv_blackservice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		initView();//初始化界面
@@ -31,10 +34,39 @@ public class SettingCenterActivity extends Activity {
 	private void initData() {
 		//初始化自动更新复选框的初始状态
 		sciv_autoupdate.setChecked(SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false));
+
+		//初始化黑名单服务复选框状态
+		sciv_blackservice.setChecked(
+				ServiceUtils.isServiceRunning(getApplicationContext(),
+						"com.net13.sean.mobileguard.service.TelSmsBlackService"));
+
 	}
 
 	private void initEvent() {
 
+		//黑名单服务启动/关闭
+		sciv_blackservice.setItemClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//判断黑名单服务是否运行
+				if (ServiceUtils.isServiceRunning(getApplicationContext(),
+						"com.net13.sean.mobileguard.service.TelSmsBlackService")) {
+					//服务正在运行
+					//关闭服务
+					Intent blackService = new Intent(SettingCenterActivity.this, TelSmsBlackService.class);
+					stopService(blackService);
+					//设置复选框的状态为false
+					sciv_blackservice.setChecked(false);
+				} else {
+					//服务停止,打开服务
+					Intent blackService = new Intent(SettingCenterActivity.this, TelSmsBlackService.class);
+					startService(blackService);
+					sciv_blackservice.setChecked(true);
+				}
+			}
+		});
+
+		//自动更新的事件处理
 		sciv_autoupdate.setItemClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -52,5 +84,6 @@ public class SettingCenterActivity extends Activity {
 		setContentView(R.layout.activity_settingcenter);
 		//获取自动更新的自定义view
 		sciv_autoupdate = (SettingCenterItemView) findViewById(R.id.sciv_setting_center_autoupdate);
+		sciv_blackservice = (SettingCenterItemView) findViewById(R.id.sciv_setting_center_blackservice);
 	}
 }

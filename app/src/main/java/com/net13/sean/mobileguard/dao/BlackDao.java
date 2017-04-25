@@ -25,101 +25,6 @@ public class BlackDao {
 	}
 
 	/**
-	 * @return 总数据个数
-	 */
-	public int getTotalRows() {
-		SQLiteDatabase database = blackDBOpenHelper.getReadableDatabase();
-		Cursor cursor = database.rawQuery("select count(1) from "
-				+ BlackTable.BLACKTABLE, null);
-		cursor.moveToNext();
-		// 总行数
-		int totalRows = cursor.getInt(0);
-
-		cursor.close();// 关闭游标
-		return totalRows;
-	}
-
-
-	/**
-	 * @param datasNumber 分批加载的数据条目数
-	 * @param startIndex  取数据的起始位置
-	 * @return 分批加载数据
-	 */
-	public List<BlackBean> getMoreDatas(int datasNumber, int startIndex) {
-		List<BlackBean> datas = new ArrayList<BlackBean>();
-		SQLiteDatabase database = blackDBOpenHelper.getReadableDatabase();
-		// 获取blacktb的所有数据游标 (2 + 3) + ""
-		Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + ","
-				+ BlackTable.MODE + " from " + BlackTable.BLACKTABLE
-				+ " order by _id desc limit ?,? ", new String[]{startIndex + "", datasNumber + ""});
-
-		while (cursor.moveToNext()) {
-			// 有数据，数据封装
-			BlackBean bean = new BlackBean();
-
-			// 封装黑名单号码
-			bean.setPhone(cursor.getString(0));
-
-			// 封装拦截模式
-			bean.setMode(cursor.getInt(1));
-
-			// 添加数据到集合中
-			datas.add(bean);
-		}
-
-		cursor.close();// 关闭游标
-		database.close();// 关闭数据库
-
-		return datas;
-	}
-
-	/**
-	 * @param currentPage 当前页的页码
-	 * @param perPage     每页显示多少条数据
-	 * @return 当前页的数据
-	 */
-	public List<BlackBean> getPageDatas(int currentPage, int perPage) {
-		List<BlackBean> datas = new ArrayList<BlackBean>();
-		SQLiteDatabase database = blackDBOpenHelper.getReadableDatabase();
-		// 获取blacktb的所有数据游标 (2 + 3) + ""
-		Cursor cursor = database.rawQuery("select " + BlackTable.PHONE + ","
-				+ BlackTable.MODE + " from " + BlackTable.BLACKTABLE
-				+ " limit ?,? ", new String[]{((currentPage - 1) * perPage) + "", perPage + ""});
-
-		while (cursor.moveToNext()) {
-			// 有数据，数据封装
-			BlackBean bean = new BlackBean();
-
-			// 封装黑名单号码
-			bean.setPhone(cursor.getString(0));
-
-			// 封装拦截模式
-			bean.setMode(cursor.getInt(1));
-
-			// 添加数据到集合中
-			datas.add(bean);
-		}
-
-		cursor.close();// 关闭游标
-		database.close();// 关闭数据库
-
-		return datas;
-
-	}
-
-	/**
-	 * @param perPage 指定每页显示多少条数据
-	 * @return 总页数
-	 */
-	public int getTotalPages(int perPage) {
-		int totalRows = getTotalRows();
-		// 计算出多少页，采用ceil函数，返回不小于该数的最小整数 如 :6.1 返回7.0
-		int totalPages = (int) Math.ceil(totalRows * 1.0 / perPage);
-		return totalPages;
-
-	}
-
-	/**
 	 * @return 返回所有的黑名单数据
 	 */
 	public List<BlackBean> getAllDatas() {
@@ -216,5 +121,23 @@ public class BlackDao {
 
 		// 关闭数据库
 		db.close();
+	}
+
+	/**
+	 * @param phone 传入号码
+	 * @return 拦截模式 1:短信 2:电话 3:全部拦截
+	 */
+	public int getMode(String phone) {
+		SQLiteDatabase database = blackDBOpenHelper.getReadableDatabase();
+		Cursor cursor = database.rawQuery("select " + BlackTable.MODE
+				+ " from " + BlackTable.BLACKTABLE + " where "
+				+ BlackTable.PHONE + "=?", new String[]{phone});
+		int mode = 0;//默认为0,不是黑名单号码
+		if (cursor.moveToNext()) {// 是黑名单号码
+			mode = cursor.getInt(0);// 取出对应号码的拦截模式
+		} else {
+			mode = 0;// 不是黑名单号码
+		}
+		return mode;
 	}
 }

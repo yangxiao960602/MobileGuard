@@ -27,7 +27,6 @@ public class LostFindService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -46,7 +45,6 @@ public class LostFindService extends Service {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		//取消注册短信的监听广播
 		unregisterReceiver(receiver);
 		Log.d(TAG, "onDestroy: LostFindService服务被销毁");
@@ -63,7 +61,6 @@ public class LostFindService extends Service {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
 			//实现短信拦截功能
 			Bundle extras = intent.getExtras();
 			// int i = 3
