@@ -13,4 +13,5 @@ public interface MyConstants {
 	int MUSIC = 120;//120首音乐
 	String LOSTFIND = "lostfind";//开机是否开启手机防盗
 	String LOSTFINDNAME = "lostfindname";//手机防盗名
+	String AUTOUPDATE = "autoupdate";//自定更新设置
 }

@@ -37,7 +37,10 @@ public class BootReceiver extends BroadcastReceiver {
 			safeNumber = EncryptTools.decrypt(MyConstants.MUSIC, safeNumber);
 			//发送短信给安全号码
 			SmsManager sm = SmsManager.getDefault();
-			sm.sendTextMessage(safeNumber, "", "I am thief !!!", null, null);
+
+			// TODO: 2017/4/25
+			//别浪费我短信费
+			//sm.sendTextMessage(safeNumber, "", "I am thief !!!", null, null);
 		}
 
 		//自动启动防盗服务

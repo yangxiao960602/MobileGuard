@@ -74,6 +74,13 @@ public class HomeActivity extends Activity {
 						}
 						break;
 
+					case 1:
+						//打开通讯卫士的界面
+						Intent telSmsSafe = new Intent(HomeActivity.this, TelSmsSafeActivity.class);
+						startActivity(telSmsSafe);
+
+						break;
+
 					case 8://设置中心
 						//打开设置中心的界面
 						Intent setting = new Intent(HomeActivity.this, SettingCenterActivity.class);
@@ -165,6 +172,10 @@ public class HomeActivity extends Activity {
 					SpTools.putString(getApplicationContext(), MyConstants.PASSWORD, passone);
 					Log.d(TAG, "onClick: 密码密文为 : " + passone);
 					dialog.dismiss();
+
+					//设置完密码后直接进入防盗设置界面
+					Intent intent = new Intent(HomeActivity.this, Setup1Activity.class);
+					startActivity(intent);
 				}
 			}
 		});

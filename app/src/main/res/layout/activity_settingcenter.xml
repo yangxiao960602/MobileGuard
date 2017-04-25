@@ -10,8 +10,10 @@
 		android:text="设置中心"/>
 
 	<com.net13.sean.mobileguard.view.SettingCenterItemView
+		android:id="@+id/sciv_setting_center_autoupdate"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:orientation="vertical"
 		net13:content="自动更新已经关闭-自动更新已经打开"
 		net13:title="自动更新设置"/>
 

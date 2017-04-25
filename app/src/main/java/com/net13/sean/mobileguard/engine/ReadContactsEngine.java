@@ -52,6 +52,10 @@ public class ReadContactsEngine {
 			datas.add(bean);//加一条好友信息
 		}
 		cursor.close();
+
+		// TODO: 2017/4/25
+		//通讯录排序
+
 		return datas;
 	}
 }

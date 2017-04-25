@@ -24,10 +24,9 @@ public class SettingCenterItemView extends LinearLayout {
 	private CheckBox cb_check;
 	private String[] contents;
 	private View item;
-
+	private View blackitem;
 	/**
 	 * 配置文件中，反射实例化设置属性参数
-	 *
 	 * @param context
 	 * @param attrs
 	 */
@@ -35,19 +34,21 @@ public class SettingCenterItemView extends LinearLayout {
 		super(context, attrs);
 		initView();
 		initEvent();
-
-		String title = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto", "title");
 		String content = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto", "content");
 
+		String title = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto", "title");
+
 		tv_title.setText(title);
+
 		contents = content.split("-");
+		//初始化设置未选中的颜色为红色
+		tv_content.setTextColor(Color.RED);
+		tv_content.setText(contents[0]);
 
 	}
 
-
 	/**
 	 * 代码实例化调用该构造函数
-	 *
 	 * @param context
 	 */
 	public SettingCenterItemView(Context context) {
@@ -55,6 +56,41 @@ public class SettingCenterItemView extends LinearLayout {
 		initView();
 	}
 
+	/**
+	 * 黑名单item根布局设置点击事件
+	 *
+	 * @param listener
+	 */
+	public void setBlackItemClickListener(OnClickListener listener) {
+		//通过自定义组合控制，把事件传递给子组件
+		blackitem.setOnClickListener(listener);
+	}
+
+	/**
+	 * item根布局设置点击事件
+	 *
+	 * @param listener
+	 */
+	public void setItemClickListener(OnClickListener listener) {
+		//通过自定义组合控制，把事件传递给子组件
+		item.setOnClickListener(listener);
+	}
+
+	/**
+	 * @return item里的checkbox的状态
+	 */
+	public boolean isChecked() {
+		return cb_check.isChecked();
+	}
+
+	/**
+	 * 设置item里的checkbox的状态
+	 *
+	 * @param isChecked
+	 */
+	public void setChecked(boolean isChecked) {
+		cb_check.setChecked(isChecked);
+	}
 
 	/**
 	 * 初始化复选框事件
@@ -63,14 +99,13 @@ public class SettingCenterItemView extends LinearLayout {
 		//item 相对布局
 		item.setOnClickListener(new OnClickListener() {
 
-			//通过整个相对布局的点击事件来切换CheckBox的选中状态
 			@Override
 			public void onClick(View v) {
+				//sciv_autoupdate.setChecked(!sciv_autoupdate.isChecked());
 				cb_check.setChecked(!cb_check.isChecked());
 			}
 		});
 
-		//复选框变化事件
 		cb_check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -80,7 +115,7 @@ public class SettingCenterItemView extends LinearLayout {
 					tv_content.setTextColor(Color.GREEN);
 					tv_content.setText(contents[1]);
 				} else {
-					//设置选中的颜色为绿色
+					//设置未选中的颜色为红色
 					tv_content.setTextColor(Color.RED);
 					tv_content.setText(contents[0]);
 				}
@@ -91,8 +126,7 @@ public class SettingCenterItemView extends LinearLayout {
 	/**
 	 * 初始化LinearLayout的子组件
 	 */
-	private void initView() {
-		//把布局文件转换成一个view组件
+	private void initView(){
 		item = View.inflate(getContext(), R.layout.item_settingcenter_view, null);
 		//显示标题
 		tv_title = (TextView) item.findViewById(R.id.tv_settingcenter_autoupdate_title);
@@ -100,8 +134,13 @@ public class SettingCenterItemView extends LinearLayout {
 		tv_content = (TextView) item.findViewById(R.id.tv_settingcenter_autoupdate_content);
 		//设置复选框
 		cb_check = (CheckBox) item.findViewById(R.id.cb_settingcenter_autoupdate_checked);
-		//将view组件加载到线性布局中
-		addView(item);
+
+		//设置中心item
+		addView(item, 0);
+
+		/*//黑名单item
+		blackitem = View.inflate(getContext(), R.layout.item_telsmssafe_listview, null);
+		addView(blackitem,1);//黑名单item*/
 	}
 
 }

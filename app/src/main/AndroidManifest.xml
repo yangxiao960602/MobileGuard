@@ -49,6 +49,7 @@
 		<activity android:name=".activities.Setup4Activity"></activity>
 		<activity android:name=".activities.FriendsActivity"></activity>
 		<activity android:name=".activities.SettingCenterActivity"></activity>
+		<activity android:name=".activities.TelSmsSafeActivity"></activity>
 
 
 

@@ -29,6 +29,8 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.net13.sean.mobileguard.R;
 import com.net13.sean.mobileguard.domain.UrlBean;
+import com.net13.sean.mobileguard.utils.MyConstants;
+import com.net13.sean.mobileguard.utils.SpTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
 	private String versionName;    //版本名
 	private UrlBean parsedUrlData;    //url的信息封装
 	private long startTimeMillis;    //记录开始访问网络的时间
+
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -105,8 +108,31 @@ public class SplashActivity extends AppCompatActivity {
 		//初始化动画
 		initAnimation();
 
-		//检查更新
-		checkVersion();
+		//耗时的功能方法封装,只要耗时的操作,都放在如下方法内
+		//timeConsuming
+
+	}
+
+	/**
+	 * 耗时的功能封装,耗时的操作都放在此方法下
+	 */
+	private void timeConsuming() {
+		//判断自动更新是否开启
+		if (SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false)) {
+			//true 自动更新
+			//检查更新
+			checkVersion();
+		} else {
+			new Thread() {
+				@Override
+				public void run() {
+					SystemClock.sleep(1000);
+					handler.obtainMessage(LOADMAIN).sendToTarget();
+				}
+			}.start();
+		}
+
+		//其他耗时操作
 	}
 
 	/**
@@ -446,6 +472,24 @@ public class SplashActivity extends AppCompatActivity {
 		as.addAnimation(sa);    //加载比例动画
 		as.addAnimation(ra);    //加载旋转动画
 		as.addAnimation(aa);    //加载渐变动画
+
+		as.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				//耗时的功能,在动画开始播放时统一处理
+				timeConsuming();
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+		});
 
 		//显示动画,根布局设置动画
 		rl_root.startAnimation(as);    //同事播放三个动画
