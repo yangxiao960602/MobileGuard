@@ -38,8 +38,7 @@ public class BootReceiver extends BroadcastReceiver {
 			//发送短信给安全号码
 			SmsManager sm = SmsManager.getDefault();
 
-			// TODO: 2017/4/25
-			//别浪费我短信费
+			// TODO: 2017/4/25 别浪费我短信费
 			//sm.sendTextMessage(safeNumber, "", "I am thief !!!", null, null);
 		}
 

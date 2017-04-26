@@ -5,9 +5,9 @@ package com.net13.sean.mobileguard.domain;
  * 黑名单表的结构
  */
 public interface BlackTable {
+	String BLACKTABLE = "blacktb";//黑名单表名
 	String PHONE = "phone";//黑名单号码列
 	String MODE = "mode";//黑名单拦截模式列
-	String BLACKTABLE = "blacktb";//黑名单表名
 
 	/**
 	 * 标记性常量,每一个标记只对应一个位为1

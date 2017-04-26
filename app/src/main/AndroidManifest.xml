@@ -19,6 +19,9 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 	<uses-permission android:name="android.permission.READ_CALL_LOG"/>
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
+	<uses-permission android:name="android.permission.READ_CALL_LOG"/>
+	<uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
 
 
 	<application
@@ -40,7 +43,6 @@
 			</intent-filter>
 		</activity>
 
-
 		<activity android:name=".activities.HomeActivity"/>
 		<activity android:name=".activities.LostFindActivity"/>
 		<activity android:name=".activities.Setup1Activity"/>
@@ -52,10 +54,12 @@
 		<activity android:name=".activities.TelSmsSafeActivity"/>
 		<activity android:name=".activities.CalllogsActivity"/>
 		<activity android:name=".activities.SmslogsActivity"/>
+		<activity android:name=".activities.AppManagerActivity"/>
 
 
 		<service android:name=".service.LostFindService"/>
 		<service android:name=".service.LocationService"/>
+		<service android:name=".service.TelSmsBlackService"/>
 
 
 		<receiver android:name=".receiver.BootReceiver">
@@ -77,6 +81,7 @@
 				<action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
 			</intent-filter>
 		</receiver>
+
 
 	</application>
 

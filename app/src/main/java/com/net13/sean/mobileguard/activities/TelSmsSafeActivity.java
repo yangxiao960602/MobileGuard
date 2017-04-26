@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -116,7 +117,6 @@ public class TelSmsSafeActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		initView();// 初始化界面
@@ -286,7 +286,6 @@ public class TelSmsSafeActivity extends Activity {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 								 int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
 
 			}
 		});*/
@@ -301,7 +300,7 @@ public class TelSmsSafeActivity extends Activity {
 				// 取数据之前，发个消息显示正在加载数据的进度条
 				handler.obtainMessage(LOADING).sendToTarget();
 
-				//SystemClock.sleep(600);
+				SystemClock.sleep(1000);
 
 				// 加载更多数据
 				//allDatas = dao.getMoreDatas(MOREDATASCOUNTS, datas.size());
@@ -368,7 +367,7 @@ public class TelSmsSafeActivity extends Activity {
 		// 短信拦截复选框
 		final CheckBox cb_sms = (CheckBox) view.findViewById(R.id.cb_telsmssafe_smsmode);
 
-		// 短信拦截复选框
+		// 电话拦截复选框
 		final CheckBox cb_phone = (CheckBox) view.findViewById(R.id.cb_telsmssafe_phonemode);
 
 		// 添加黑名单号码按钮
@@ -431,6 +430,15 @@ public class TelSmsSafeActivity extends Activity {
 				adapter = new MyAdapter();
 				lv_safenumbers.setAdapter(adapter);
 				dialog.dismiss();
+
+				// 显示listview
+				lv_safenumbers.setVisibility(View.VISIBLE);
+
+				// 隐藏没有数据
+				tv_nodata.setVisibility(View.GONE);
+
+				// 隐藏加载数据的进度
+				pb_loading.setVisibility(View.GONE);
 			}
 		});
 		ab.setView(view);
@@ -458,19 +466,28 @@ public class TelSmsSafeActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
+			int size = datas.size();
+			if (size == 0) {
+				//如果黑名单数据为空
+				// 隐藏listview
+				lv_safenumbers.setVisibility(View.GONE);
+
+				// 显示没有数据
+				tv_nodata.setVisibility(View.VISIBLE);
+
+				// 隐藏加载数据的进度
+				pb_loading.setVisibility(View.GONE);
+			}
 			return datas.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
@@ -542,8 +559,10 @@ public class TelSmsSafeActivity extends Activity {
 									datas.remove(position);
 
 									// 通知界面更新数据，让用户看到删除数据不存在
-									adapter.notifyDataSetChanged();// 只是让listview
-									// 重新去当前显示位置的数据
+									// 只是让listview重新去当前显示位置的数据
+									adapter.notifyDataSetChanged();
+									//如果删除的是最后一条数据,提示没有数据
+
 								}
 							});
 					ab.setNegativeButton("No", null);// 自动关闭对话框
@@ -553,38 +572,5 @@ public class TelSmsSafeActivity extends Activity {
 
 			return convertView;
 		}
-
-		/*
-		 * @Override public View getView(int position, View convertView,
-		 * ViewGroup parent) { // TODO Auto-generated method stub View view =
-		 * View.inflate(getApplicationContext(),
-		 * R.layout.item_telsmssafe_listview, null);
-		 *
-		 * //显示黑名单号码 TextView tv_phone = (TextView)
-		 * view.findViewById(R.id.tv_telsmssafe_listview_item_number);
-		 *
-		 * //显示黑名单号码拦截模式 TextView tv_mode = (TextView)
-		 * view.findViewById(R.id.tv_telsmssafe_listview_item_mode);
-		 *
-		 * //删除黑名单数据的 按钮 ImageView iv_delete = (ImageView)
-		 * view.findViewById(R.id.iv_telsmssafe_listview_item_delete);
-		 *
-		 * //初始化数据
-		 *
-		 *
-		 * //获取当前位置的数据 BlackBean bean = datas.get(position);
-		 *
-		 * tv_phone.setText(bean.getPhone());//显示黑名单号码
-		 *
-		 * //设置黑名单的模式 switch (bean.getMode()) { case BlackTable.SMS://短信拦截
-		 * tv_mode.setText("短信拦截"); break; case BlackTable.TEL://电话拦截
-		 * tv_mode.setText("电话拦截"); break; case BlackTable.ALL://全部拦截
-		 * tv_mode.setText("全部拦截"); break;
-		 *
-		 * default: break; }
-		 *
-		 * return view; }
-		 */
-
 	}
 }

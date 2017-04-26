@@ -115,8 +115,7 @@ public class ReadContactsEngine {
 		}
 		cursor.close();
 
-		// TODO: 2017/4/25
-		//通讯录按姓名排序
+		// TODO: 2017/4/25 通讯录按姓名排序
 		/*if (datas.size() != 0){
 			Collections.sort(datas, new Comparator<ContactsBean>() {
 				@Override
@@ -151,7 +150,6 @@ public class ReadContactsEngine {
 		try {
 			bytes = new StringBuffer().append(c).toString().getBytes("gbk");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (bytes.length == 1) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,6 +53,7 @@ public abstract class BaseFriendsCallSmsActivity extends ListActivity {
 					pd.setMessage("正在玩命加载数据。。。。。");
 					pd.show();//显示对话框
 					break;
+
 				case FINISH://数据加载完成
 					if (pd != null) {
 						pd.dismiss();//关闭对话框
@@ -122,7 +124,7 @@ public abstract class BaseFriendsCallSmsActivity extends ListActivity {
 				//获取数据	核心代码
 				//datas = ReadContactsEngine.readContants(getApplicationContext());
 				datas = getDatas();
-				//SystemClock.sleep(1000);//为了展示进度条，休眠
+				SystemClock.sleep(1000);//为了展示进度条，休眠
 
 				//数据获取完成,发送数据加载完成的消息
 				msg = Message.obtain();

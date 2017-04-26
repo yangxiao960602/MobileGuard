@@ -18,6 +18,7 @@
 		net13:title="自动更新设置"/>
 
 	<com.net13.sean.mobileguard.view.SettingCenterItemView
+		android:id="@+id/sciv_setting_center_blackservice"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		net13:content="黑名单拦截设置已经关闭-黑名单拦截设置已经打开"
