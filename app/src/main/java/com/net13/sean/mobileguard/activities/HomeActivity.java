@@ -78,7 +78,12 @@ public class HomeActivity extends Activity {
 						//打开通讯卫士的界面
 						Intent telSmsSafe = new Intent(HomeActivity.this, TelSmsSafeActivity.class);
 						startActivity(telSmsSafe);
+						break;
 
+					case 2:
+						//打开通讯卫士的界面
+						Intent appManager = new Intent(HomeActivity.this, AppManagerActivity.class);
+						startActivity(appManager);
 						break;
 
 					case 8://设置中心
