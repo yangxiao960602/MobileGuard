@@ -16,6 +16,7 @@ import com.net13.sean.mobileguard.R;
 
 /**
  * Created by SEAN on 2017/4/22.
+ * 手机防盗服务
  */
 
 public class LostFindService extends Service {

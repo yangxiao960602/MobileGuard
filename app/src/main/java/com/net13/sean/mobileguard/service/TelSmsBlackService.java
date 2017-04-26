@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 
 /**
  * Created by SEAN on 2017/4/25.
- * 监听电话和短信
+ * 短信和电话黑名单服务
  */
 public class TelSmsBlackService extends Service {
 
