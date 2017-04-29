@@ -3,6 +3,7 @@ package com.net13.sean.mobileguard.activities;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,6 +29,13 @@ public class Setup4Activity extends BaseSetupActivity {
 	private DevicePolicyManager dpm;
 	private ComponentName who;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+		who = new ComponentName(Setup4Activity.this, DeviceAdminSample.class);
+		super.onCreate(savedInstanceState);
+	}
+
 	/**
 	 * 子类需要覆盖此方法，来完成界面的显示
 	 */
@@ -43,9 +51,11 @@ public class Setup4Activity extends BaseSetupActivity {
 	 */
 	@Override
 	public void initData() {
-		//初始化复选框的值 看服务是否开启
-		//如果服务开启，打钩，否则不打钩
-		if (ServiceUtils.isServiceRunning(getApplicationContext(), "com.net13.sean.mobileguard.service.LostFindService")) {
+		//初始化复选框的值
+		//如果服务开启切设备管理员激活，打钩，否则不打钩
+		if (ServiceUtils.isServiceRunning(getApplicationContext(),
+				"com.net13.sean.mobileguard.service.LostFindService")
+				&& dpm.isAdminActive(who)) {
 			// 服务在运行
 			cb_isprotected.setChecked(true);
 		} else {
@@ -66,8 +76,7 @@ public class Setup4Activity extends BaseSetupActivity {
 
 				//检查设别管理员权限
 				//如果没有激活设备管理员，提醒给用户做事
-				dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
-				who = new ComponentName(Setup4Activity.this, DeviceAdminSample.class);
+
 				if (cb_isprotected.isChecked() && !dpm.isAdminActive(who)) {
 					Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
 					intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, who);
