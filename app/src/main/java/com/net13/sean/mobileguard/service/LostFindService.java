@@ -3,6 +3,7 @@ package com.net13.sean.mobileguard.service;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,6 +14,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 import com.net13.sean.mobileguard.R;
+import com.net13.sean.mobileguard.receiver.DeviceAdminSample;
 
 /**
  * Created by SEAN on 2017/4/22.
@@ -33,6 +35,7 @@ public class LostFindService extends Service {
 
 	@Override
 	public void onCreate() {
+
 		//短信广播接收者
 		receiver = new SmsReceiver();
 		IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");

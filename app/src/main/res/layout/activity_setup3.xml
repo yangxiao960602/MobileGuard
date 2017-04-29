@@ -30,7 +30,7 @@
 			android:layout_height="wrap_content"
 			android:background="@drawable/bt_selector"
 			android:onClick="selectSafeNumber"
-			android:text="选择安全号码"/>
+			android:text="从通讯录选择安全号码"/>
 	</RelativeLayout>
 
 	<LinearLayout

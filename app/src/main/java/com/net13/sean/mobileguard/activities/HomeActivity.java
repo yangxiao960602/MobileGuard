@@ -1,6 +1,7 @@
 package com.net13.sean.mobileguard.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +10,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,14 +35,14 @@ public class HomeActivity extends Activity {
 
 	private static final String TAG = "HomeActivity";
 	private GridView gv_menus;
+	//
+//	private int icons[] = {R.drawable.safe, R.drawable.callmsgsafe, R.drawable.app,
+//			R.drawable.taskmanager, R.drawable.netmanager, R.drawable.trojan,
+//			R.drawable.sysoptimize, R.drawable.atools, R.drawable.settings};
+	private int icons[] = {R.drawable.safe, R.drawable.callmsgsafe,
+			R.drawable.app, R.drawable.settings};
 
-	private int icons[] = {R.drawable.safe, R.drawable.callmsgsafe, R.drawable.app,
-			R.drawable.taskmanager, R.drawable.netmanager, R.drawable.trojan,
-			R.drawable.sysoptimize, R.drawable.atools, R.drawable.settings};
-
-	private String names[] = {"手机防盗", "通讯卫士", "软件管家",
-			"进程管理", "流量统计", "病毒查杀",
-			"缓存清理", "高级工具", "设置中心",};
+	private String names[] = {"手机防盗", "通讯卫士", "软件管家", "设置中心",};
 	private MyAdapter adapter;    //gridview的适配器
 	private AlertDialog dialog;
 
@@ -50,6 +53,8 @@ public class HomeActivity extends Activity {
 		initView();    //初始化界面
 		initData();    //给GridView设置数据
 		initEvent();    //初始化事件
+
+
 	}
 
 	/**
@@ -86,7 +91,7 @@ public class HomeActivity extends Activity {
 						startActivity(appManager);
 						break;
 
-					case 8://设置中心
+					case 3://设置中心
 						//打开设置中心的界面
 						Intent setting = new Intent(HomeActivity.this, SettingCenterActivity.class);
 						startActivity(setting);
@@ -205,6 +210,13 @@ public class HomeActivity extends Activity {
 	private void initView() {
 		setContentView(R.layout.activity_home);
 		gv_menus = (GridView) findViewById(R.id.gv_home_menus);
+
+		WindowManager wm = this.getWindowManager();
+		int height = wm.getDefaultDisplay().getHeight();
+
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(gv_menus.getLayoutParams());
+		lp.setMargins(0, height / 7, 0, 0);
+		gv_menus.setLayoutParams(lp);
 	}
 
 	private class MyAdapter extends BaseAdapter {
