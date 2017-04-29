@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,31 +16,28 @@ import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.net13.sean.mobileguard.R;
 import com.net13.sean.mobileguard.domain.AppBean;
 import com.net13.sean.mobileguard.engine.AppManagerEngine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-//import cn.sharesdk.framework.ShareSDK;
-//import cn.sharesdk.onekeyshare.OnekeyShare;
-//
-//import com.itheima62.mobileguard.R;
-//import com.itheima62.mobileguard.domain.AppBean;
-//import com.itheima62.mobileguard.engine.AppManagerEngine;
-//import com.stericson.RootTools.RootTools;
-//import com.stericson.RootTools.RootToolsException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by SEAN on 2017/4/26.
@@ -65,7 +63,7 @@ public class AppManagerActivity extends Activity {
 	// 系统的apk容器
 	private List<AppBean> sysApks = new ArrayList<AppBean>();
 
-//	private void showShare() {
+	//	private void showShare() {
 //		ShareSDK.initSDK(this);
 //		OnekeyShare oks = new OnekeyShare();
 //		// 关闭sso授权
@@ -94,7 +92,7 @@ public class AppManagerActivity extends Activity {
 //		// 启动分享GUI
 //		oks.show(this);
 //	}
-private MyAdapter adapter;
+	private MyAdapter adapter;
 	private TextView tv_userApp_lable;
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -130,87 +128,83 @@ private MyAdapter adapter;
 
 	};
 	private View popupView;
-
-//	private void initPopupWindow() {
-//		// 弹出窗体的界面
-//		popupView = View.inflate(getApplicationContext(),
-//				R.layout.popup_appmanager, null);
-//
-//		LinearLayout ll_remove = (LinearLayout) popupView
-//				.findViewById(R.id.ll_appmanager_pop_remove);
-//		LinearLayout ll_setting = (LinearLayout) popupView
-//				.findViewById(R.id.ll_appmanager_pop_setting);
-//		LinearLayout ll_share = (LinearLayout) popupView
-//				.findViewById(R.id.ll_appmanager_pop_share);
-//		LinearLayout ll_start = (LinearLayout) popupView
-//				.findViewById(R.id.ll_appmanager_pop_start);
-//
-//		View.OnClickListener listener = new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				switch (v.getId()) {
-//					case R.id.ll_appmanager_pop_remove:// 卸载软件
-//						removeApk();// 卸载apk
-//						break;
-//					case R.id.ll_appmanager_pop_setting:// 设置中心
-//						settingCenter();// 设置中心
-//						break;
-//					case R.id.ll_appmanager_pop_share:// 软件分享
-//						shareApk();// 软件分享
-//						break;
-//					case R.id.ll_appmanager_pop_start:// 启动软件
-//						startApk();// 启动软件
-//						break;
-//
-//					default:
-//						break;
-//				}
-//				closePopupWindow();// 关闭弹出窗体
-//			}
-//		};
-//		ll_remove.setOnClickListener(listener);
-//		ll_setting.setOnClickListener(listener);
-//		ll_share.setOnClickListener(listener);
-//		ll_start.setOnClickListener(listener);
-//		// 初始化弹出窗体
-//		pw = new PopupWindow(popupView, -2, -2);
-//
-//		// 有动画效果必须设置背景
-//		pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// 透明的背景
-//
-//		// 弹出窗体的动画
-//		sa = new ScaleAnimation(0, 1, 0.5f, 1, Animation.RELATIVE_TO_SELF, 0f,
-//				Animation.RELATIVE_TO_SELF, 0.5f);
-//		sa.setDuration(300);
-//
-//	}
-private PopupWindow pw;
+	private PopupWindow pw;
 	private ScaleAnimation sa;
 	private PackageManager pm;
+	private BroadcastReceiver receiver;
 
-//	protected void removeApk() {
-//		// 卸载软件
-//		// 1,用户apk
-//		/*
-//		 * <intent-filter> <action android:name="android.intent.action.VIEW" />
-//		 * <action android:name="android.intent.action.DELETE" /> <category
-//		 * android:name="android.intent.category.DEFAULT" /> <data
-//		 * android:scheme="package" /> </intent-filter>
-//		 */
-//		if (!clickBean.isSystem()) {
-//			//用户apk
-//			Intent intent = new Intent("android.intent.action.DELETE");
-//			intent.addCategory("android.intent.category.DEFAULT");
-//			intent.setData(
-//					Uri.parse("package:" + clickBean.getPackName()));
-//			startActivity(intent);// 删除用户apk的Activity
-//			//刷新自己的数据，监听：package remove   注册删除数据广播,通过广播来更新数据
-//		} else {
-//			// 2,系统apk 默认删除不掉，root刷机，赋予root权限，才可以删除
-//
-//			//命令写在代码中
-//
+	private void initPopupWindow() {
+		// 弹出窗体的界面
+		popupView = View.inflate(getApplicationContext(),
+				R.layout.popup_appmanager, null);
+		LinearLayout ll_remove =
+				(LinearLayout) popupView.findViewById(R.id.ll_appmanager_pop_remove);
+		LinearLayout ll_setting =
+				(LinearLayout) popupView.findViewById(R.id.ll_appmanager_pop_setting);
+		LinearLayout ll_start =
+				(LinearLayout) popupView.findViewById(R.id.ll_appmanager_pop_start);
+
+		//处理popupwindow各按钮的点击事件
+		View.OnClickListener listener = new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				switch (v.getId()) {
+					case R.id.ll_appmanager_pop_remove:// 卸载软件
+						removeApk();// 卸载apk
+						break;
+
+					case R.id.ll_appmanager_pop_setting:// 设置中心
+						settingCenter();// 设置中心
+						break;
+
+					case R.id.ll_appmanager_pop_start:// 启动软件
+						startApk();// 启动软件
+						break;
+
+					default:
+						break;
+				}
+				closePopupWindow();// 关闭弹出窗体
+			}
+		};
+		ll_remove.setOnClickListener(listener);
+		ll_setting.setOnClickListener(listener);
+		ll_start.setOnClickListener(listener);
+		// 初始化弹出窗体
+		pw = new PopupWindow(popupView, -2, -2);
+
+		// 有动画效果必须设置背景
+		pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// 透明的背景
+
+		// 弹出窗体的动画
+		sa = new ScaleAnimation(0, 1, 0.5f, 1, Animation.RELATIVE_TO_SELF, 0f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		sa.setDuration(400);
+
+	}
+
+	protected void removeApk() {
+		// 卸载软件
+		// 1,用户apk
+		/*
+		 * <intent-filter> <action android:name="android.intent.action.VIEW" />
+		 * <action android:name="android.intent.action.DELETE" /> <category
+		 * android:name="android.intent.category.DEFAULT" /> <data
+		 * android:scheme="package" /> </intent-filter>
+		 */
+		if (!clickBean.isSystem()) {
+			//用户apk
+			Intent intent = new Intent("android.intent.action.DELETE");
+			intent.addCategory("android.intent.category.DEFAULT");
+			intent.setData(Uri.parse("package:" + clickBean.getPackName()));
+			startActivity(intent);// 删除用户apk的Activity
+			//刷新自己的数据,直观滴显示删除的效果 : 监听：package remove 注册删除数据广播,通过广播来更新数据
+		} else {
+			//系统apk 默认删除不掉，root刷机，赋予root权限，才可以删除
+
+			//命令写在代码中
+
 //			try {
 //				//判断是否root刷机
 //				if (!RootTools.isRootAvailable()) {
@@ -238,9 +232,10 @@ private PopupWindow pw;
 //			} catch (RootToolsException e) {
 //				e.printStackTrace();
 //			}
-//		}
-//	}
-private BroadcastReceiver receiver;
+
+			Toast.makeText(getApplicationContext(), "系统应用无法卸载!!!", Toast.LENGTH_SHORT).show();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -252,20 +247,23 @@ private BroadcastReceiver receiver;
 
 		initEvent();// 初始化事件
 
-		//initPopupWindow();// 初始化弹出窗体
+		initPopupWindow();// 初始化弹出窗体
 
 		initRemoveApkReceiver();//注册删除apk的广播接受者
 	}
 
+	/**
+	 * 注册删除apk的广播接受者
+	 */
 	private void initRemoveApkReceiver() {
 		//删除apk(包括系统apk)的监听广播
 		receiver = new BroadcastReceiver() {
 
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				//更新数据 刷新数据
+				//更新数据&刷新数据
 				initData();
-				System.out.println("删除数据。。。。。。。。。。。");
+				System.out.println("删除应用。。。。。。。。。。。");
 			}
 		};
 
@@ -274,8 +272,6 @@ private BroadcastReceiver receiver;
 		//注意配置数据模式
 		filter.addDataScheme("package");
 		registerReceiver(receiver, filter);
-
-
 	}
 
 	private void closePopupWindow() {
@@ -298,52 +294,42 @@ private BroadcastReceiver receiver;
 
 		// 通过包名获取意图
 		Intent launchIntentForPackage = pm.getLaunchIntentForPackage(packName);
-		startActivity(launchIntentForPackage);
-	}
-
-	protected void shareApk() {
-		// 1，短信
-		/*
-		 * <action android:name="android.intent.action.SEND" /> <category
-		 * android:name="android.intent.category.DEFAULT" /> <data
-		 * android:mimeType="text/plain" />
-		 *
-		 * Intent intent = new Intent("android.intent.action.SEND");
-		 * intent.addCategory("android.intent.category.DEFAULT");
-		 * intent.setType("text/plain"); intent.putExtra(Intent.EXTRA_TEXT,
-		 * "downloadurl:baidu yixia"); startActivity(intent);
-		 */
-
-		// 2,分享微博
-		//showShare();
+		try {
+			startActivity(launchIntentForPackage);
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), "此应用无法打开!", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		}
 
 	}
+
 
 	protected void settingCenter() {
-		Intent intent = new Intent(
-				"android.settings.APPLICATION_DETAILS_SETTINGS");
+		Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
 		intent.setData(Uri.parse("package:" + clickBean.getPackName()));
 		startActivity(intent);
 	}
 
 	private void initEvent() {
+		//item点击事件的处理
 		lv_datas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-									int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//用户软件标签通过给textview设置为可点击抢走listview的时间
 				// 获取当前点击的位置的值，如果点击标签不做处理
 				// 如果点击的是系统软件标签位置，不做处理
 				if (position == userApks.size() + 1) {
 					return;
 				}
 				// 点击是条目的信息，获取当前点击位置的信息
-
 				// 获取数据listview.getItemAtPosition 本质调用adapter.getItem();
 				clickBean = (AppBean) lv_datas.getItemAtPosition(position);
 				int[] location = new int[2];
 				view.getLocationInWindow(location);
-				showPopupWindow(view, location[0] + 50, location[1]);
+				View img = view.findViewById(R.id.iv_appmanager_listview_item_icon);
+				showPopupWindow(view, location[0] + img.getWidth() + 20,
+						location[1] - (img.getHeight() / 2));
 			}
 		});
 
@@ -386,6 +372,7 @@ private BroadcastReceiver receiver;
 				SystemClock.sleep(500);
 				// 获取所有apk数据
 				List<AppBean> datas = AppManagerEngine.getAllApks(getApplicationContext());
+
 				//添加新的数据之前，要先清空原来的数据
 				sysApks.clear();
 				userApks.clear();
@@ -490,15 +477,14 @@ private BroadcastReceiver receiver;
 				} else {
 					convertView = View.inflate(getApplicationContext(),
 							R.layout.item_appmanager_listview, null);
-
-					holder.iv_icon = (ImageView) convertView
-							.findViewById(R.id.iv_appmanager_listview_item_icon);
-					holder.tv_title = (TextView) convertView
-							.findViewById(R.id.tv_appmanager_listview_item_title);
-					holder.tv_location = (TextView) convertView
-							.findViewById(R.id.tv_appmanager_listview_item_location);
-					holder.tv_size = (TextView) convertView
-							.findViewById(R.id.tv_appmanager_listview_item_size);
+					holder.iv_icon = (ImageView) convertView.findViewById(
+							R.id.iv_appmanager_listview_item_icon);
+					holder.tv_title = (TextView) convertView.findViewById(
+							R.id.tv_appmanager_listview_item_title);
+					holder.tv_location = (TextView) convertView.findViewById(
+							R.id.tv_appmanager_listview_item_location);
+					holder.tv_size = (TextView) convertView.findViewById(
+							R.id.tv_appmanager_listview_item_size);
 					// 绑定tag
 					convertView.setTag(holder);
 				}
@@ -525,51 +511,6 @@ private BroadcastReceiver receiver;
 			}
 
 		}
-
-		/*
-		 * @Override public View getView(int position, View convertView,
-		 * ViewGroup parent) { if (position == 0) { //用户apk的标签 TextView
-		 * tv_userTable = new TextView(getApplicationContext());
-		 * tv_userTable.setText("个人软件(" + userApks.size() + ")");
-		 * tv_userTable.setTextColor(Color.WHITE);//文字为白色
-		 * tv_userTable.setBackgroundColor(Color.GRAY);//文字背景为灰色 return
-		 * tv_userTable; } else if (position == userApks.size() + 1){ //系统apk标签
-		 * TextView tv_userTable = new TextView(getApplicationContext());
-		 * tv_userTable.setText("系统软件(" + sysApks.size() + ")");
-		 * tv_userTable.setTextColor(Color.WHITE);//文字为白色
-		 * tv_userTable.setBackgroundColor(Color.GRAY);//文字背景为灰色 return
-		 * tv_userTable; } else { View view = null; if (convertView != null &&
-		 * convertView instanceof RelativeLayout) { view = convertView; } else {
-		 * view = View.inflate(getApplicationContext(),
-		 * R.layout.item_appmanager_listview_item, null); }
-		 *
-		 * ImageView iv_icon = (ImageView)
-		 * view.findViewById(R.id.iv_appmanager_listview_item_icon); TextView
-		 * tv_title = (TextView)
-		 * view.findViewById(R.id.tv_appmanager_listview_item_title); TextView
-		 * tv_location = (TextView)
-		 * view.findViewById(R.id.tv_appmanager_listview_item_location);
-		 * TextView tv_size = (TextView)
-		 * view.findViewById(R.id.tv_appmanager_listview_item_size);
-		 *
-		 *
-		 *
-		 * AppBean bean = getItem(position);
-		 *
-		 * //设置数据 iv_icon.setImageDrawable(bean.getIcon());//设置图标
-		 *
-		 * if (bean.isSd()) { tv_location.setText("SD存储");//设置存储位置 } else {
-		 * tv_location.setText("Rom存储"); }
-		 *
-		 * tv_title.setText(bean.getAppName());//设置名字
-		 *
-		 * //设置占用的大小
-		 * tv_size.setText(Formatter.formatFileSize(getApplicationContext(),
-		 * bean.getSize())); return view; }
-		 *
-		 *
-		 * }
-		 */
 
 
 		/*

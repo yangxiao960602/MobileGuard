@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -245,6 +246,7 @@ public class TelSmsSafeActivity extends Activity {
 	 * 给每个组件设置事件
 	 */
 	private void initEvent() {
+
 		// 给ListView设置滑动事件
 		/*lv_safenumbers.setOnScrollListener(new OnScrollListener() {
 
@@ -349,6 +351,7 @@ public class TelSmsSafeActivity extends Activity {
 		//showInputBlacknumberDialog();
 		showPopupWindow();
 	}
+
 
 	/**
 	 * 从其他界面选择的黑名单号码
