@@ -63,35 +63,6 @@ public class AppManagerActivity extends Activity {
 	// 系统的apk容器
 	private List<AppBean> sysApks = new ArrayList<AppBean>();
 
-	//	private void showShare() {
-//		ShareSDK.initSDK(this);
-//		OnekeyShare oks = new OnekeyShare();
-//		// 关闭sso授权
-//		oks.disableSSOWhenAuthorize();
-//
-//		// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
-//		// oks.setNotification(R.drawable.ic_launcher,
-//		// getString(R.string.app_name));
-//		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-//		oks.setTitle(getString(R.string.share));
-//		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-//		oks.setTitleUrl("http://sharesdk.cn");
-//		// text是分享文本，所有平台都需要这个字段
-//		oks.setText("我是分享文本");
-//		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//		oks.setImagePath("/sdcard/p1.jpg");// 确保SDcard下面存在此张图片
-//		// url仅在微信（包括好友和朋友圈）中使用
-//		oks.setUrl("http://sharesdk.cn");
-//		// comment是我对这条分享的评论，仅在人人网和QQ空间使用
-//		oks.setComment("我是单身美女，过来约我");
-//		// site是分享此内容的网站名称，仅在QQ空间使用
-//		oks.setSite(getString(R.string.app_name));
-//		// siteUrl是分享此内容的网站地址，仅在QQ空间使用
-//		oks.setSiteUrl("http://sharesdk.cn");
-//
-//		// 启动分享GUI
-//		oks.show(this);
-//	}
 	private MyAdapter adapter;
 	private TextView tv_userApp_lable;
 	private Handler handler = new Handler() {
@@ -201,38 +172,6 @@ public class AppManagerActivity extends Activity {
 			startActivity(intent);// 删除用户apk的Activity
 			//刷新自己的数据,直观滴显示删除的效果 : 监听：package remove 注册删除数据广播,通过广播来更新数据
 		} else {
-			//系统apk 默认删除不掉，root刷机，赋予root权限，才可以删除
-
-			//命令写在代码中
-
-//			try {
-//				//判断是否root刷机
-//				if (!RootTools.isRootAvailable()) {
-//					Toast.makeText(getApplicationContext(), "请先root刷机", 0).show();
-//					return;
-//				}
-//				//是否root权限授权给当前apk
-//				if (!RootTools.isAccessGiven()) {
-//					Toast.makeText(getApplicationContext(), "请先root刷机", 0).show();
-//					return;
-//				}
-//
-//				//直接可以使用命令删除apk
-//				RootTools.sendShell("mount -o remount rw /system", 8000);//设置命令的超时时间为8秒
-//				System.out.println("安装路径:" + clickBean.getApkPath());
-//				RootTools.sendShell("rm -r " + clickBean.getApkPath(), 8000);
-//				RootTools.sendShell("mount -o remount r /system", 8000);
-//
-//
-//
-//			} catch (TimeoutException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			} catch (RootToolsException e) {
-//				e.printStackTrace();
-//			}
-
 			Toast.makeText(getApplicationContext(), "系统应用无法卸载!!!", Toast.LENGTH_SHORT).show();
 		}
 	}

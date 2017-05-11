@@ -123,7 +123,8 @@ public class HomeActivity extends Activity {
 					return;
 				} else {
 					//密码判断,MD5 两次加密
-					passone = Md5Utils.md5(Md5Utils.md5(passone));
+					String passtemp = Md5Utils.md5(passone);
+					passone = Md5Utils.md5(passtemp);
 					//读取sp中保存的密文进行判断
 					if (passone.equals(SpTools.getString(getApplicationContext(), MyConstants.PASSWORD, ""))) {
 						//如果密码一致

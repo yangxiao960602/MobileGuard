@@ -12,7 +12,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="10dp"
-		android:text="您的手机防盗卫士:"/>
+		android:text="您的手机防盗卫士功能如下:"/>
 
 	<TextView
 		android:layout_width="fill_parent"
@@ -44,6 +44,14 @@
 		android:drawableLeft="@android:drawable/btn_star_big_on"
 		android:gravity="center_vertical"
 		android:text="远程清除数据"
+		android:textSize="18sp"/>
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@android:drawable/btn_star_big_on"
+		android:gravity="center_vertical"
+		android:text="远程播放警报音乐"
 		android:textSize="18sp"/>
 
 	<LinearLayout

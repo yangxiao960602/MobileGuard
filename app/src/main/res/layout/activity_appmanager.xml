@@ -24,7 +24,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerInParent="true"
-				android:text="ROM可用空间:111MB"/>
+				android:text="ROM可用空间:???"/>
 		</RelativeLayout>
 
 		<RelativeLayout
@@ -37,7 +37,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerInParent="true"
-				android:text="SD可用空间:111MB"/>
+				android:text="SD可用空间:???"/>
 		</RelativeLayout>
 
 	</LinearLayout>

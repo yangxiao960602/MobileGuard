@@ -118,8 +118,6 @@ public class Setup2Activity extends BaseSetupActivity {
 	 */
 	@Override
 	public void nextActivity() {
-
-
 		startActivity(Setup3Activity.class);
 	}
 

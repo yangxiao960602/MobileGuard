@@ -89,6 +89,7 @@ public class LostFindService extends Service {
 					dpm.resetPassword("123", 0);
 					//远程锁屏
 					dpm.lockNow();
+
 					abortBroadcast();//终止广播
 				} else if (mess.equals("#*wipedata*#")) {//远程清除数据
 					//获取设备管理器
@@ -96,6 +97,7 @@ public class LostFindService extends Service {
 					//清除sd数据
 					dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
 					dpm.wipeData(0);
+
 					abortBroadcast();//终止广播
 				} else if (mess.equals("#*music*#")) {
 					//只播放一次

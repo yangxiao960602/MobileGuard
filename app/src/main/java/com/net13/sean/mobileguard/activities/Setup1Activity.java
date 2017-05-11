@@ -17,6 +17,7 @@ public class Setup1Activity extends BaseSetupActivity {
 	/**
 	 * 子类需要覆盖此方法，来完成界面的显示
 	 */
+	@Override
 	public void initView() {
 		setContentView(R.layout.activity_setup1);
 	}

@@ -118,7 +118,7 @@ public class SplashActivity extends AppCompatActivity {
 	 */
 	private void timeConsuming() {
 		//判断自动更新是否开启
-		if (SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false)) {
+		if (SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, true)) {
 			//true 自动更新
 			//检查更新
 			checkVersion();
@@ -126,7 +126,7 @@ public class SplashActivity extends AppCompatActivity {
 			new Thread() {
 				@Override
 				public void run() {
-					SystemClock.sleep(1000);
+					SystemClock.sleep(3000);
 					handler.obtainMessage(LOADMAIN).sendToTarget();
 				}
 			}.start();
@@ -174,7 +174,7 @@ public class SplashActivity extends AppCompatActivity {
 					//获取当前时间
 					startTimeMillis = System.currentTimeMillis();
 
-					URL url = new URL("http://192.168.1.100:8080/MobileGuard/guardversion.json");
+					URL url = new URL("http://10.0.3.2:8080/MobileGuard/guardversion.json");
 					conn = (HttpURLConnection) url.openConnection();
 					conn.setReadTimeout(5000);    //读取数据超时
 					conn.setConnectTimeout(5000);    //网络连接超时
@@ -234,8 +234,8 @@ public class SplashActivity extends AppCompatActivity {
 						msg.arg1 = errorCode;
 					}
 					long endTime = System.currentTimeMillis();
-					if (endTime - startTimeMillis < 1000) {
-						SystemClock.sleep(1000 - (endTime - startTimeMillis));    //补足动画时间
+					if (endTime - startTimeMillis < 3000) {
+						SystemClock.sleep(3000 - (endTime - startTimeMillis));    //补足动画时间
 					}
 					handler.sendMessage(msg);    //发送信息
 
@@ -437,7 +437,7 @@ public class SplashActivity extends AppCompatActivity {
 		//0.0完全透明, 1.0完全显示
 		AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
 		//动画播放的时间
-		aa.setDuration(1000);
+		aa.setDuration(3000);
 		//动画停留在结束状态
 		aa.setFillAfter(true);
 
@@ -450,7 +450,7 @@ public class SplashActivity extends AppCompatActivity {
 				Animation.RELATIVE_TO_SELF, 0.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f);
 		//设置动画时间
-		ra.setDuration(1000);
+		ra.setDuration(3000);
 		//动画停留在结束状态
 		ra.setFillAfter(true);
 
@@ -462,7 +462,7 @@ public class SplashActivity extends AppCompatActivity {
 				Animation.RELATIVE_TO_SELF, 0.5f,
 				Animation.RELATIVE_TO_SELF, 0.5f);
 		//设置动画时间
-		sa.setDuration(1000);
+		sa.setDuration(3000);
 		//动画停留在结束状态
 		sa.setFillAfter(true);
 
@@ -492,8 +492,7 @@ public class SplashActivity extends AppCompatActivity {
 		});
 
 		//显示动画,根布局设置动画
-		rl_root.startAnimation(as);    //同事播放三个动画
-		//tv_copyright.startAnimation(as);
+		rl_root.startAnimation(as);    //同时播放三个动画
 
 	}
 }

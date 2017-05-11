@@ -33,7 +33,7 @@ public class SettingCenterActivity extends Activity {
 
 	private void initData() {
 		//初始化自动更新复选框的初始状态
-		sciv_autoupdate.setChecked(SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, false));
+		sciv_autoupdate.setChecked(SpTools.getBoolean(getApplicationContext(), MyConstants.AUTOUPDATE, true));
 
 		//初始化黑名单服务复选框状态
 		sciv_blackservice.setChecked(

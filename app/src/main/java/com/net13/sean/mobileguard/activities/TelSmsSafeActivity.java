@@ -247,50 +247,6 @@ public class TelSmsSafeActivity extends Activity {
 	 */
 	private void initEvent() {
 
-		// 给ListView设置滑动事件
-		/*lv_safenumbers.setOnScrollListener(new OnScrollListener() {
-
-			*//*
-			 * (non-Javadoc) onScrollStateChanged 状态改变调用此方法 SCROLL_STATE_FLING:
-			 * 惯性滑动 SCROLL_STATE_IDLE: 滑动停止 SCROLL_STATE_TOUCH_SCROLL: 按住滑动
-			 * 三种状态，每种状态改变都会触发此方法
-			 *
-			 * @see
-			 * android.widget.AbsListView.OnScrollListener#onScrollStateChanged
-			 * (android.widget.AbsListView, int)
-			 *//*
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// 监控静止状态SCROLL_STATE_IDLE
-				// 当出现SCROLL_STATE_IDLE的状态时候，判断是否显示最后一条数据，如果显示最后一条数据，那就加载更多的数据
-				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-					// 当出现SCROLL_STATE_IDLE的状态时候
-
-					// 判断是否显示最后一条数据，如果显示最后一条数据，那就加载更多的数据
-					// 获取最后显示的数据位置
-					int lastVisiblePosition = lv_safenumbers
-							.getLastVisiblePosition();
-					if (lastVisiblePosition == datas.size() - 1) {// 最后显示的位置是最后一条数据
-						// 加载更多的数据
-						initData();
-					}
-
-				}
-			}
-
-			*//*
-			 * (non-Javadoc) onScroll 按住滑动触发事件
-			 *
-			 * @see
-			 * android.widget.AbsListView.OnScrollListener#onScroll(android.
-			 * widget.AbsListView, int, int, int)
-			 *//*
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-								 int visibleItemCount, int totalItemCount) {
-
-			}
-		});*/
 	}
 
 	private void initData() {

@@ -24,7 +24,6 @@ public class MyTextView extends android.support.v7.widget.AppCompatTextView {
 
 	/**
 	 * Returns true if this view has focus
-	 *
 	 * @return True if this view has focus, false otherwise.
 	 */
 	@Override

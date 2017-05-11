@@ -110,7 +110,6 @@ public abstract class BaseSetupActivity extends Activity {
 
 	/**
 	 * 下一个页面的事件处理
-	 *
 	 * @param v
 	 */
 	public void next(View v) {
@@ -134,7 +133,7 @@ public abstract class BaseSetupActivity extends Activity {
 		// 1,完成界面的切换
 		prevActivity();
 		// 2,动画的播放
-		prevAnimation();// 界面之间企划的动画
+		prevAnimation();// 界面之间切换的动画
 	}
 
 	/**
@@ -154,7 +153,6 @@ public abstract class BaseSetupActivity extends Activity {
 
 	/**
 	 * 共有的界面跳转封装
-	 *
 	 * @param type
 	 */
 	public void startActivity(Class type) {

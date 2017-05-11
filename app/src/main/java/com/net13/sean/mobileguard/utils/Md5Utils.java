@@ -17,7 +17,7 @@ public class Md5Utils {
 		try {
 			//获取MD5加密器
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] bytes = str.getBytes();
+			byte[] bytes = str.getBytes();    //原文字节码
 			byte[] digest = md.digest(bytes);    //加密后的字节码-
 
 			for (byte b : digest) {
